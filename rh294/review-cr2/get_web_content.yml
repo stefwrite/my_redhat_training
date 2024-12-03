@@ -1,0 +1,23 @@
+---
+- name: Test web content
+  hosts: workstation
+  become: true
+
+  tasks:
+
+    - name: Retrieve web content and write to error log on failure
+      block:
+ 
+        - name: Retrieve web content
+          register: content
+          ansible.builtin.uri:
+            url: http://servera.lab.example.com
+            return_content: true
+
+      rescue:
+
+        - name: Write to error file
+          ansible.builtin.lineinfile:
+            path: /home/student/review-cr2/error.log
+            line: "{{ content }}"
+            create: true

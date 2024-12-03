@@ -1,0 +1,5 @@
+workstation
+
+[webservers]
+server[a:b].lab.example.com
+
