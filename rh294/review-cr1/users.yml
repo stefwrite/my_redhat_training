@@ -1,0 +1,23 @@
+---
+- name: Configure users on dev hosts
+  hosts: dev
+
+  vars:
+    dev_group: dev
+    dev_users:
+      - joe
+      - sam
+
+  tasks:
+
+    - name: Ensure the dev group is present
+      ansible.builtin.group:
+        name: "{{ dev_group }}"
+        state: present
+
+    - name: Ensure the users are present
+      loop: "{{ dev_users }}"
+      ansible.builtin.user:
+        name: "{{ dev_users }}"
+        groups: "{{ dev_group }}"
+

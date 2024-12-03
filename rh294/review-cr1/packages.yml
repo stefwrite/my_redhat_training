@@ -1,0 +1,22 @@
+---
+- name: Deploy packages on hosts
+  hosts: dev
+
+  vars:
+    packages:
+      - httpd
+      - mariadb-server
+
+  tasks:
+
+    - name: Ensure the packages are present
+      ansible.builtin.dnf:
+        name: "{{ packages }}"
+        state: latest
+
+    - name: Ensure redis is installed based on swap value
+      when: ansible_facts['swaptotal_mb'] > 10
+      ansible.builtin.dnf:
+        name: redis
+        state: latest
+
