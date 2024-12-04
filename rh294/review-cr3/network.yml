@@ -10,5 +10,5 @@
         - name: eth1
           type: ethernet
           ip:
-            address: 172.25.250.25/24
+            address: 172.25.250.45/24
 
