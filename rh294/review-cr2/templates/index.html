@@ -1,0 +1,7 @@
+This is a test page for host {{ ansible_facts['hostname'] }}
+
+This web infrastructure contains the following hosts:
+{% for thishost in groups['webservers'] %}
+{{ hostvars[thishost]['ansible_facts']['hostname'] }} - {{ hostvars[thishost]['ansible_facts']['fqdn'] }} ({{ hostvars[thishost]['ansible_facts']['default_ipv4']['address'] }})
+{% endfor %}
+

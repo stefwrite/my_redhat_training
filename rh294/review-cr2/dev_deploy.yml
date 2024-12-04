@@ -25,10 +25,15 @@
         group: root
         mode: '0644'
 
-    - name: Ensure the homepage is deployed
-      ansible.builtin.copy:
-        src: files/
-        dest: "/var/www/vhosts/{{ ansible_facts['hostname'] }}/"
+    - name: Ensure the vhost homepage directories exist
+      ansible.buitlin.file:
+        path: "/var/www/vhosts/{{ ansible_facts['hostname'] }}"
+        state: directory
+
+    - name: Ensure the homepages are deployed on vhosts
+      ansible.builtin.template:
+        src: templates/index.html
+        dest: "/var/www/vhosts/{{ ansible_facts['hostname'] }}/index.html"
         owner: root
         group: root
         mode: '0644'

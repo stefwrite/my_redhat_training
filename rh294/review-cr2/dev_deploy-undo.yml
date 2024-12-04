@@ -1,0 +1,20 @@
+---
+- name: Clean packages on webserver hosts
+  hosts: webservers
+  become: true
+
+  tasks:
+
+    - name: Ensure packages are removed
+      ansible.builtin.dnf:
+        name: httpd
+        state: absent
+
+    - name: Remove the custom files
+      loop:
+        - "/var/www/vhosts/{{ ansible_facts['hostname'] }}/"
+        - /etc/httpd/conf.d/vhost.conf
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+
