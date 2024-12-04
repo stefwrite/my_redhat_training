@@ -1,0 +1,17 @@
+---
+- name: Deploy log rotation schedule on webservers
+  hosts: webservers
+
+  tasks:
+
+    - name: Ensure the webserver log rotation is configured
+      ansible.builtin.cron:
+        name: rotate_web
+        cron_file: /etc/cron.d/rotate_web
+        user: devops
+        minute: "0"
+        hour: "0"
+        weekday: "*"
+        job: "logrotate -f /etc/logrotate.d/httpd"
+        state: present
+

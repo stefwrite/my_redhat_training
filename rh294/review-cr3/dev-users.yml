@@ -1,0 +1,33 @@
+---
+- name: Deploy webserver users
+  hosts: webservers
+
+  vars_files:
+    - pass-vault.yml
+    # This variable file is protected my Ansible vault
+    # and includes variable pwhash with a hashed password.
+
+  tasks:
+
+    - name: Ensure that the webdev group is configured
+      ansible.builtin.group:
+        name: webdev
+        state: present
+
+    - name: Ensure the developer user is configured
+      ansible.builtin.user:
+        name: developer
+        password: "{{ pwhash }}"
+        groups: webdev
+        state: present
+
+    - name: Ensure webdev group can use sudo without a password
+      ansible.builtin.lineinfile:
+        path: /etc/sudoers
+        line: "%webdev ALL=(ALL) NOPASSWD: ALL"
+        state: present
+        create: true
+        # This visudo command is actually in one of the examples 
+        # in the doc for this module.
+        validate: /usr/sbin/visudo -cf %s
+

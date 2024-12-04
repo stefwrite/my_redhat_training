@@ -1,0 +1,6 @@
+---
+- import_playbook: storage.yml
+- import_playbook: dev-users.yml
+- import_playbook: network.yml
+- import_playbook: log-rotate.yml
+
